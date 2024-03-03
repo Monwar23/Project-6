@@ -55,8 +55,8 @@ const loadData = async () => {
 let clickCount=0;
 const showPostDetails=(title,view)=>{
     clickCount++
-    const clickElement=document.getElementById('count')
-    clickElement.textContent=clickCount
+    const clickElement=document.getElementById('count');
+    clickElement.textContent=clickCount;
 
     const clickPost = document.getElementById('click-post')
     const div = document.createElement('div')
