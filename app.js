@@ -1,13 +1,13 @@
 
-const loadData= async () =>{
-    const res=await fetch('https://openapi.programming-hero.com/api/retro-forum/posts');
-    const data=await res.json();
-    const allData=data.posts;
-    const postDetails=document.getElementById('post-details');
-    allData.forEach((items)=>{
-        const div=document.createElement('div')
+const loadData = async () => {
+    const res = await fetch('https://openapi.programming-hero.com/api/retro-forum/posts');
+    const data = await res.json();
+    const allData = data.posts;
+    const postDetails = document.getElementById('post-details');
+    allData.forEach((items) => {
+        const div = document.createElement('div')
         const indicatorColor = items.isActive ? 'green' : 'red';
-        div.innerHTML=`
+        div.innerHTML = `
         <div class="hero bg-base-200 mb-5 rounded-lg">
                         <div class="hero-content flex-col lg:flex-row">
                             <div class="indicator">
@@ -42,16 +42,34 @@ const loadData= async () =>{
                                             <p>${items.posted_time} min</p>
                                         </div>
                                     </div>
-                                    <div><button class="btn mt-2"><img src="icon/Group.png" alt=""></button></div>
+                                    <div><button onclick="showPostDetails('${items.title}','${items.view_count}')" class="btn mt-2"><img src="icon/Group.png" alt=""></button></div>
                                 </div>
                             </div>
                         </div>
                     </div>
         `
         postDetails.appendChild(div)
-        
-
     })
+    
+}
+let clickCount=0;
+const showPostDetails=(title,view)=>{
+    clickCount++
+    const clickElement=document.getElementById('count')
+    clickElement.textContent=clickCount
+
+    const clickPost = document.getElementById('click-post')
+    const div = document.createElement('div')
+    div.innerHTML = `
+                    <div class="flex justify-around">
+                        <h4>${title}</h4>
+                        <div class="flex gap-2">
+                            <img src="icon/Group 16.png" alt="">
+                            <p>${view}</p>
+                        </div>
+                    </div>
+        `
+    clickPost.appendChild(div)
 }
 
 loadData()
