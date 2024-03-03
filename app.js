@@ -1,57 +1,68 @@
 
-const loadData = async (categoryName) => {
-    const res = await fetch('https://openapi.programming-hero.com/api/retro-forum/posts');
+const loadData = async (category) => {
+    const res = await fetch(category? `https://openapi.programming-hero.com/api/retro-forum/posts?category=${category}` : 'https://openapi.programming-hero.com/api/retro-forum/posts');
     const data = await res.json();
     const allData = data.posts;
     const postDetails = document.getElementById('post-details');
-    postDetails.innerHTML='';
-    allData.forEach((items) => {
-        const div = document.createElement('div')
-        const indicatorColor = items.isActive ? 'green' : 'red';
-        div.innerHTML = `
-        <div class="hero bg-base-200 mb-5 rounded-lg">
-                        <div class="hero-content flex-col lg:flex-row">
-                            <div class="indicator">
-                                <span class="indicator-item badge " style="background-color: ${indicatorColor};"></span>
-                                <div class="grid w-32 h-32 bg-base-300 place-items-center rounded-3xl shadow-2xl"><img
-                                        src="${items.image}" alt=""></div>
-                            </div>
-                            <div>
-                                <div class="flex gap-5">
-                                    <div>
-                                        <p># <span>${items.category}</span></p>
-                                    </div>
-                                    <div>
-                                        <p>Author: <span>${items.author.name}</span></p>
-                                    </div>
+    // postDetails.innerHTML='';
+    
+    if (allData.length === 0) {
+        alert('No posts found for the specified category.');
+    }
+    else{
+        if (category) {
+            postDetails.innerHTML = '';
+        }
+
+        allData.forEach((items) => {
+            const div = document.createElement('div')
+            const indicatorColor = items.isActive ? 'green' : 'red';
+            div.innerHTML = `
+            <div class="hero bg-base-200 mb-5 rounded-lg">
+                            <div class="hero-content flex-col lg:flex-row">
+                                <div class="indicator">
+                                    <span class="indicator-item badge " style="background-color: ${indicatorColor};"></span>
+                                    <div class="grid w-32 h-32 bg-base-300 place-items-center rounded-3xl shadow-2xl"><img
+                                            src="${items.image}" alt=""></div>
                                 </div>
-                                <h1 class="text-5xl font-bold mt-5">${items.title}</h1>
-                                <p class="py-6">${items.description}</p>
-                                <hr>
-                                <div class="flex justify-between">
-                                    <div class="flex gap-4 my-6">
-                                        <div class="flex gap-2">
-                                            <img src="icon/Group 13.png" alt="">
-                                            <p>${items.comment_count}</p>
+                                <div>
+                                    <div class="flex gap-5">
+                                        <div>
+                                            <p># <span>${items.category}</span></p>
                                         </div>
-                                        <div class="flex gap-2">
-                                            <img src="icon/Group 16.png" alt="">
-                                            <p>${items.view_count}</p>
-                                        </div>
-                                        <div class="flex gap-2">
-                                            <img src="icon/Group 18.png" alt="">
-                                            <p>${items.posted_time} min</p>
+                                        <div>
+                                            <p>Author: <span>${items.author.name}</span></p>
                                         </div>
                                     </div>
-                                    <div><button onclick="showPostDetails('${items.title}','${items.view_count}')" class="btn mt-2"><img src="icon/Group.png" alt=""></button></div>
+                                    <h1 class="text-5xl font-bold mt-5">${items.title}</h1>
+                                    <p class="py-6">${items.description}</p>
+                                    <hr>
+                                    <div class="flex justify-between">
+                                        <div class="flex gap-4 my-6">
+                                            <div class="flex gap-2">
+                                                <img src="icon/Group 13.png" alt="">
+                                                <p>${items.comment_count}</p>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <img src="icon/Group 16.png" alt="">
+                                                <p>${items.view_count}</p>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <img src="icon/Group 18.png" alt="">
+                                                <p>${items.posted_time} min</p>
+                                            </div>
+                                        </div>
+                                        <div><button onclick="showPostDetails('${items.title}','${items.view_count}')" class="btn mt-2"><img src="icon/Group.png" alt=""></button></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-        `
-        postDetails.appendChild(div)
-    })
-    
+            `
+            postDetails.appendChild(div)
+        })
+        
+    }
+   
 }
 let clickCount=0;
 const showPostDetails=(title,view)=>{
@@ -62,7 +73,7 @@ const showPostDetails=(title,view)=>{
     const clickPost = document.getElementById('click-post')
     const div = document.createElement('div')
     div.innerHTML = `
-                    <div class="flex justify-between shadow-xl mt-4">
+                    <div class="flex justify-between shadow-xl mt-4 p-4">
                         <h4>${title}</h4>
                         <div class="flex gap-2">
                             <img src="icon/Group 16.png" alt="">
@@ -72,9 +83,9 @@ const showPostDetails=(title,view)=>{
         `
     clickPost.appendChild(div)
 }
-
 const searchInput=()=>{
     const InputValue=document.getElementById('input-value').value
+    console.log(InputValue)
     if(InputValue){
         loadData(InputValue)
     }
