@@ -1,9 +1,10 @@
 
-const loadData = async () => {
+const loadData = async (categoryName) => {
     const res = await fetch('https://openapi.programming-hero.com/api/retro-forum/posts');
     const data = await res.json();
     const allData = data.posts;
     const postDetails = document.getElementById('post-details');
+    postDetails.innerHTML='';
     allData.forEach((items) => {
         const div = document.createElement('div')
         const indicatorColor = items.isActive ? 'green' : 'red';
@@ -72,4 +73,49 @@ const showPostDetails=(title,view)=>{
     clickPost.appendChild(div)
 }
 
+const searchInput=()=>{
+    const InputValue=document.getElementById('input-value').value
+    if(InputValue){
+        loadData(InputValue)
+    }
+    else{
+        alert('please enter valid text Value')
+    }
+
+}
+
+const latestPost=async()=>{
+    const res=await fetch('https://openapi.programming-hero.com/api/retro-forum/latest-posts')
+    const data=await res.json()
+    const latestPost=document.getElementById('latest-post')
+    data.forEach((item)=>{
+        const div=document.createElement('div')
+        div.innerHTML=`
+        <div class=" card w-96 bg-base-100 shadow-xl ">
+        <figure class="px-10 pt-10">
+            <img src="${item.cover_image}" alt="Shoes"
+                class="rounded-xl" />
+        </figure>
+        <div class="card-body ">
+            <div class="flex gap-4">
+                <img src="icon/Frame (1).png" alt="">
+                <p>${item.author.posted_date || 'No publish date'}</p>
+            </div>
+            <h2 class="card-title font-medium text-lg">${item.title}</h2>
+            <p class="text-xs">${item.description}</p>
+            <div class="flex gap-4">
+                <img src="${item.profile_image}" alt="" style="width: 50px; height: 50px;" class="rounded-3xl">
+                <div>
+                    <h4 class="font-semibold">${item.author.name}</h4>
+                    <p class="text-xs">${item.author.designation || 'Unknown'}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+        `
+        latestPost.appendChild(div)
+    })
+}
+
 loadData()
+latestPost()
