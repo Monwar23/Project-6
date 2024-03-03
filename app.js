@@ -1,6 +1,9 @@
 
 const loadData = async (category) => {
-    const res = await fetch(category?`https://openapi.programming-hero.com/api/retro-forum/posts?category=${category}` : 'https://openapi.programming-hero.com/api/retro-forum/posts');
+    const spinner = document.getElementById('spinner');
+    spinner.classList.remove('hidden');
+    try{
+        const res = await fetch(category?`https://openapi.programming-hero.com/api/retro-forum/posts?category=${category}` : 'https://openapi.programming-hero.com/api/retro-forum/posts');
     const data = await res.json();
     const allData = data.posts;
     const postDetails = document.getElementById('post-details');
@@ -32,7 +35,7 @@ const loadData = async (category) => {
                                         <p>Author: <span>${items.author.name}</span></p>
                                     </div>
                                 </div>
-                                <h1 class="text-5xl font-bold mt-5">${items.title}</h1>
+                                <h1 class="text-4xl font-bold mt-5">${items.title}</h1>
                                 <p class="py-6">${items.description}</p>
                                 <hr>
                                 <div class="flex justify-between">
@@ -59,6 +62,14 @@ const loadData = async (category) => {
         postDetails.appendChild(div)
     })
   }
+    }catch(error){
+        console.error('Error loading data:', error)
+    }
+    finally {
+        setTimeout(() => {
+            spinner.classList.add('hidden')
+        }, 2000)
+    }
 }
 let clickCount=0;
 const showPostDetails=(title,view)=>{
@@ -83,8 +94,14 @@ const searchInput=()=>{
     const InputValue=document.getElementById('input-value').value
     // console.log(InputValue)
     if(InputValue){
+        const spinner = document.getElementById('spinner');
+        spinner.classList.remove('hidden'); 
         loadData(InputValue)
-    }
+        setTimeout(() => {
+            spinner.classList.add('hidden'); // Hide the spinner after 2 seconds
+        }, 2000);
+    } 
+    
     else{
         alert('please enter valid text Value')
     }
