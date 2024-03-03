@@ -61,7 +61,7 @@ const showPostDetails=(title,view)=>{
     const clickPost = document.getElementById('click-post')
     const div = document.createElement('div')
     div.innerHTML = `
-                    <div class="flex justify-around">
+                    <div class="flex justify-between shadow-xl mt-4">
                         <h4>${title}</h4>
                         <div class="flex gap-2">
                             <img src="icon/Group 16.png" alt="">
