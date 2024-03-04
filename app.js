@@ -1,9 +1,6 @@
 
 const loadData = async (category) => {
-    const spinner = document.getElementById('spinner');
-    spinner.classList.remove('hidden');
-    try{
-        const res = await fetch(category?`https://openapi.programming-hero.com/api/retro-forum/posts?category=${category}` : 'https://openapi.programming-hero.com/api/retro-forum/posts');
+    const res = await fetch(category?`https://openapi.programming-hero.com/api/retro-forum/posts?category=${category}` : 'https://openapi.programming-hero.com/api/retro-forum/posts');
     const data = await res.json();
     const allData = data.posts;
     const postDetails = document.getElementById('post-details');
@@ -12,7 +9,7 @@ const loadData = async (category) => {
         alert('No posts found for the specified category.');
     }
     else{
-        if (category) {
+        if(category){
             postDetails.innerHTML = '';
         }
     allData.forEach((items) => {
@@ -61,15 +58,7 @@ const loadData = async (category) => {
         `
         postDetails.appendChild(div)
     })
-  }
-    }catch(error){
-        console.error('Error loading data:', error)
-    }
-    finally {
-        setTimeout(() => {
-            spinner.classList.add('hidden')
-        }, 2000)
-    }
+}       
 }
 let clickCount=0;
 const showPostDetails=(title,view)=>{
@@ -92,22 +81,13 @@ const showPostDetails=(title,view)=>{
 }
 const searchInput=()=>{
     const InputValue=document.getElementById('input-value').value
-    // console.log(InputValue)
     if(InputValue){
-        const spinner = document.getElementById('spinner');
-        spinner.classList.remove('hidden'); 
         loadData(InputValue)
-        setTimeout(() => {
-            spinner.classList.add('hidden'); // Hide the spinner after 2 seconds
-        }, 2000);
-    } 
-    
+    }   
     else{
-        alert('please enter valid text Value')
+        alert('please enter a text Value')
     }
-
 }
-
 const latestPost=async()=>{
     const res=await fetch('https://openapi.programming-hero.com/api/retro-forum/latest-posts')
     const data=await res.json()
