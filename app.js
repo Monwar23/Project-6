@@ -1,5 +1,21 @@
+const showSpinner = () => {
+    const spinner = document.getElementById('spinner')
+    if (spinner) {
+        spinner.style.display = 'block'
+    }
+}
+
+const hideSpinner = () => {
+    const spinner = document.getElementById('spinner')
+    if (spinner) {
+        spinner.style.display = 'none'
+    }
+}
+
 
 const loadData = async (category) => {
+    showSpinner()
+ try{
     const res = await fetch(category?`https://openapi.programming-hero.com/api/retro-forum/posts?category=${category}` : 'https://openapi.programming-hero.com/api/retro-forum/posts');
     const data = await res.json();
     const allData = data.posts;
@@ -58,7 +74,14 @@ const loadData = async (category) => {
         `
         postDetails.appendChild(div)
     })
-}       
+}
+ }     
+ catch{
+    console.error('Error loading data:', error);
+ } 
+ finally {
+    hideSpinner();
+} 
 }
 let clickCount=0;
 const showPostDetails=(title,view)=>{
